@@ -2,7 +2,7 @@
 <resources>
     <!-- Menu Drawer Dimensions -->
     <dimen name="drawer_header_content_min_height">120dp</dimen>
-    <dimen name="drawer_header_padding_top">16dp</dimen>
+    <dimen name="drawer_header_padding_top">0dp</dimen>
     <dimen name="drawer_header_newpipe_icon_size">48dp</dimen>
     <dimen name="drawer_header_newpipe_icon_title_space">12dp</dimen>
     <dimen name="drawer_header_newpipe_title_default_width">130dp</dimen>

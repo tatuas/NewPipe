@@ -11,6 +11,11 @@
     <color name="dark_youtube_accent_color">#FFFFFF</color>
     <color name="dark_youtube_statusbar_color">#CD322E</color>
 
+    <color name="black_youtube_primary_color">#000000</color>
+    <color name="black_youtube_dark_color">#000000</color>
+    <color name="black_youtube_accent_color">#FFFFFF</color>
+    <color name="black_youtube_statusbar_color">#000000</color>
+
     <!-- SoundCloud -->
     <color name="light_soundcloud_primary_color">#f57c00</color>
     <color name="light_soundcloud_dark_color">#995700</color>

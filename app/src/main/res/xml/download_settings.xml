@@ -5,14 +5,16 @@
 
 
     <CheckBoxPreference
-        android:defaultValue="false"
+        android:defaultValue="true"
+        android:enabled="false"
         android:key="@string/downloads_storage_ask"
         android:summary="@string/downloads_storage_ask_summary_kitkat"
         android:title="@string/downloads_storage_ask_title"
         app:iconSpaceReserved="false" />
 
     <SwitchPreferenceCompat
-        android:defaultValue="false"
+        android:defaultValue="true"
+        android:enabled="false"
         android:key="@string/storage_use_saf"
         android:summary="@string/downloads_storage_use_saf_summary"
         android:title="@string/downloads_storage_use_saf_title"
