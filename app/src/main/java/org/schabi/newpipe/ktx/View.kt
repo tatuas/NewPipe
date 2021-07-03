@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.View
 import androidx.annotation.ColorInt
 import androidx.annotation.FloatRange
+import androidx.core.animation.addListener
 import androidx.core.view.ViewCompat
 import androidx.core.view.isGone
 import androidx.core.view.isInvisible
@@ -106,15 +107,10 @@ fun View.animateBackgroundColor(duration: Long, @ColorInt colorStart: Int, @Colo
     viewPropertyAnimator.addUpdateListener { animation: ValueAnimator ->
         backgroundTintListCompat = ColorStateList(empty, intArrayOf(animation.animatedValue as Int))
     }
-    viewPropertyAnimator.addListener(object : AnimatorListenerAdapter() {
-        override fun onAnimationEnd(animation: Animator) {
-            backgroundTintListCompat = ColorStateList(empty, intArrayOf(colorEnd))
-        }
-
-        override fun onAnimationCancel(animation: Animator) {
-            onAnimationEnd(animation)
-        }
-    })
+    viewPropertyAnimator.addListener(
+        onCancel = { backgroundTintListCompat = ColorStateList(empty, intArrayOf(colorEnd)) },
+        onEnd = { backgroundTintListCompat = ColorStateList(empty, intArrayOf(colorEnd)) }
+    )
     viewPropertyAnimator.start()
 }
 
@@ -134,17 +130,16 @@ fun View.animateHeight(duration: Long, targetHeight: Int): ValueAnimator {
         layoutParams.height = value.toInt()
         requestLayout()
     }
-    animator.addListener(object : AnimatorListenerAdapter() {
-        override fun onAnimationEnd(animation: Animator) {
+    animator.addListener(
+        onCancel = {
+            layoutParams.height = targetHeight
+            requestLayout()
+        },
+        onEnd = {
             layoutParams.height = targetHeight
             requestLayout()
         }
-
-        override fun onAnimationCancel(animation: Animator) {
-            layoutParams.height = targetHeight
-            requestLayout()
-        }
-    })
+    )
     animator.start()
     return animator
 }
@@ -317,6 +312,16 @@ fun View.slideUp(duration: Long, delay: Long, @FloatRange(from = 0.0, to = 1.0) 
         .setDuration(duration)
         .setInterpolator(FastOutSlowInInterpolator())
         .start()
+}
+
+/**
+ * Instead of hiding normally using [animate], which would make
+ * the recycler view unable to capture touches after being hidden, this just animates the alpha
+ * value setting it to `0.0` after `200` milliseconds.
+ */
+fun View.animateHideRecyclerViewAllowingScrolling() {
+    // not hiding normally because the view needs to still capture touches and allow scroll
+    animate().alpha(0.0f).setDuration(200).start()
 }
 
 enum class AnimationType {

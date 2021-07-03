@@ -171,22 +171,36 @@
     <string name="allow_heap_dumping_key" translatable="false">allow_heap_dumping_key</string>
     <string name="show_memory_leaks_key" translatable="false">show_memory_leaks_key</string>
     <string name="allow_disposed_exceptions_key" translatable="false">allow_disposed_exceptions_key</string>
-    <string name="show_original_time_ago_key" translatable="false">show_original_time_ago_text_key</string>
+    <string name="show_original_time_ago_key" translatable="false">show_original_time_ago_key</string>
+    <string name="disable_media_tunneling_key" translatable="false">disable_media_tunneling_key</string>
     <string name="crash_the_app_key" translatable="false">crash_the_app_key</string>
 
     <!-- THEMES -->
     <string name="theme_key" translatable="false">theme</string>
+    <string name="night_theme_key" translatable="false">night_theme</string>
     <string name="light_theme_key" translatable="false">light_theme</string>
     <string name="dark_theme_key" translatable="false">dark_theme</string>
     <string name="black_theme_key" translatable="false">black_theme</string>
     <string name="default_theme_value" translatable="false">@string/black_theme_key</string>
+    <string name="auto_device_theme_key" translatable="false">auto_device_theme</string>
+    <string name="default_night_theme_value" translatable="false">@string/dark_theme_key</string>
     <string-array name="theme_values_list" translatable="false">
         <item>@string/light_theme_key</item>
         <item>@string/dark_theme_key</item>
         <item>@string/black_theme_key</item>
+        <item>@string/auto_device_theme_key</item>
     </string-array>
     <string-array name="theme_description_list" translatable="false">
         <item>@string/light_theme_title</item>
+        <item>@string/dark_theme_title</item>
+        <item>@string/black_theme_title</item>
+        <item>@string/auto_device_theme_title</item>
+    </string-array>
+    <string-array name="night_theme_values_list" translatable="false">
+        <item>@string/dark_theme_key</item>
+        <item>@string/black_theme_key</item>
+    </string-array>
+    <string-array name="night_theme_description_list" translatable="false">
         <item>@string/dark_theme_title</item>
         <item>@string/black_theme_title</item>
     </string-array>
@@ -251,6 +265,7 @@
     </string-array>
     <string name="feed_use_dedicated_fetch_method_key" translatable="false">feed_use_dedicated_fetch_method</string>
 
+    <string name="import_export_data_path" translatable="false">import_export_data_path</string>
     <string name="import_data" translatable="false">import_data</string>
     <string name="export_data" translatable="false">export_data</string>
 

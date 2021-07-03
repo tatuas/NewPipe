@@ -11,8 +11,7 @@
     <string name="cancel">ᱵᱟᱹᱰᱨᱟᱹ</string>
     <string name="install">ᱵᱚᱦᱟᱞ</string>
     <string name="view_count_text">%1$s ᱧᱮᱞᱠᱚ</string>
-    <string name="main_bg_subtitle">ᱮᱦᱲᱵ ᱞᱟᱹᱜᱤᱫ \"ᱥᱮᱸᱫᱽᱨᱟ\" ᱨᱮ ᱚᱛᱟᱭ ᱢᱮ
-\n</string>
+    <string name="main_bg_subtitle">ᱮᱦᱲᱵ ᱞᱟᱹᱜᱤᱫ \"ᱥᱮᱸᱫᱽᱨᱟ\" ᱨᱮ ᱚᱛᱟᱭ ᱢᱮ</string>
     <string name="use_external_video_player_title">ᱵᱟᱦᱨᱮ ᱣᱤᱰᱤᱭᱚ ᱯᱞᱮᱭᱟᱹᱨ ᱵᱮᱵᱷᱟᱨ ᱢᱮ</string>
     <string name="search_showing_result_for">ᱛᱮᱞᱟ ᱫᱮᱠᱷᱟᱣᱜᱽ ᱠᱟᱱᱟᱺ%s</string>
     <string name="did_you_mean">ᱟᱢᱟᱜ ᱚᱨᱛᱷᱚ \"%1$s\" ᱥᱮ\?</string>
@@ -55,4 +54,6 @@
     <string name="show_higher_resolutions_summary">ᱠᱷᱟᱹᱞᱤ ᱛᱤᱱᱟᱹᱝ ᱜᱟᱱ ᱥᱟᱫᱷᱚᱱ ᱢᱮᱱᱟᱜᱼᱟ ᱚᱠᱟ ᱫᱚ 2K/4K ᱣᱤᱰᱤᱭᱚ ᱠᱚ ᱪᱟᱹᱞᱩ ᱫᱟᱲᱮᱭᱟᱜᱼᱟᱭ</string>
     <string name="open_with">ᱥᱟᱞᱟᱜ ᱠᱷᱩᱞᱟᱹᱭ ᱢᱮ</string>
     <string name="kore_not_found">Kore ᱮᱯ ᱵᱟᱭ ᱧᱟᱢ ᱞᱮᱱᱟ, ᱵᱚᱦᱟᱞ ᱟ ᱥᱮ\?</string>
+    <string name="show_play_with_kodi_summary">Kodi ᱢᱮᱰᱤᱭᱟ ᱯᱞᱮᱭᱟᱹᱨ ᱛᱮ ᱣᱤᱰᱤᱭᱚ ᱯᱞᱮ ᱨᱮᱭᱟᱜ ᱚᱯᱥᱚᱱ ᱫᱮᱠᱷᱟᱣᱢᱮ</string>
+    <string name="show_play_with_kodi_title">\"Kodi ᱛᱮ ᱪᱟᱹᱞᱩ\" ᱚᱯᱥᱚᱱ ᱫᱮᱠᱷᱟᱣᱢᱮ</string>
 </resources>

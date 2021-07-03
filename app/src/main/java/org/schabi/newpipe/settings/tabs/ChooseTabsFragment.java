@@ -27,10 +27,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.schabi.newpipe.R;
+import org.schabi.newpipe.error.ErrorActivity;
+import org.schabi.newpipe.error.ErrorInfo;
+import org.schabi.newpipe.error.UserAction;
 import org.schabi.newpipe.extractor.NewPipe;
-import org.schabi.newpipe.report.ErrorActivity;
-import org.schabi.newpipe.report.ErrorInfo;
-import org.schabi.newpipe.report.UserAction;
 import org.schabi.newpipe.settings.SelectChannelFragment;
 import org.schabi.newpipe.settings.SelectKioskFragment;
 import org.schabi.newpipe.settings.SelectPlaylistFragment;
@@ -112,10 +112,8 @@ public class ChooseTabsFragment extends Fragment {
         final MenuItem restoreItem = menu.add(Menu.NONE, MENU_ITEM_RESTORE_ID, Menu.NONE,
                 R.string.restore_defaults);
         restoreItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-
-        final int restoreIcon = ThemeHelper.resolveResourceIdFromAttr(requireContext(),
-                R.attr.ic_restore_defaults);
-        restoreItem.setIcon(AppCompatResources.getDrawable(requireContext(), restoreIcon));
+        restoreItem.setIcon(AppCompatResources.getDrawable(requireContext(),
+                R.drawable.ic_settings_backup_restore));
     }
 
     @Override
@@ -142,7 +140,7 @@ public class ChooseTabsFragment extends Fragment {
     }
 
     private void restoreDefaults() {
-        new AlertDialog.Builder(requireContext(), ThemeHelper.getDialogTheme(requireContext()))
+        new AlertDialog.Builder(requireContext())
                 .setTitle(R.string.restore_defaults)
                 .setMessage(R.string.restore_defaults_confirmation)
                 .setNegativeButton(R.string.cancel, null)
@@ -183,10 +181,9 @@ public class ChooseTabsFragment extends Fragment {
         final Tab.Type type = typeFrom(tabId);
 
         if (type == null) {
-            ErrorActivity.reportError(requireContext(),
-                    new IllegalStateException("Tab id not found: " + tabId), null, null,
-                    ErrorInfo.make(UserAction.SOMETHING_ELSE, "none",
-                            "Choosing tabs on settings", 0));
+            ErrorActivity.reportErrorInSnackbar(this,
+                    new ErrorInfo(new IllegalStateException("Tab id not found: " + tabId),
+                            UserAction.SOMETHING_ELSE, "Choosing tabs on settings"));
             return;
         }
 
@@ -242,7 +239,7 @@ public class ChooseTabsFragment extends Fragment {
                 case KIOSK:
                     returnList.add(new ChooseTabListItem(tab.getTabId(),
                             getString(R.string.kiosk_page_summary),
-                            ThemeHelper.resolveResourceIdFromAttr(context, R.attr.ic_kiosk_hot)));
+                            R.drawable.ic_whatshot));
                     break;
                 case CHANNEL:
                     returnList.add(new ChooseTabListItem(tab.getTabId(),
@@ -253,8 +250,7 @@ public class ChooseTabsFragment extends Fragment {
                     if (!tabList.contains(tab)) {
                         returnList.add(new ChooseTabListItem(tab.getTabId(),
                                 getString(R.string.default_kiosk_page_summary),
-                                ThemeHelper.resolveResourceIdFromAttr(context,
-                                        R.attr.ic_kiosk_hot)));
+                                R.drawable.ic_whatshot));
                     }
                     break;
                 case PLAYLIST:

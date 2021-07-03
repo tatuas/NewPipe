@@ -35,7 +35,7 @@
     <string name="detail_dislikes_img_view_description">Non mi piace</string>
     <string name="detail_likes_img_view_description">Mi piace</string>
     <string name="err_dir_create">Impossibile creare la cartella di download \'%1$s\'</string>
-    <string name="info_dir_created">Creata la cartella per i download \'%1$s\'</string>
+    <string name="info_dir_created">Cartella per i download \"%1$s\" creata</string>
     <string name="use_external_video_player_title">Usa lettore video esterno</string>
     <string name="use_external_audio_player_title">Usa lettore audio esterno</string>
     <string name="download_path_audio_title">Cartella audio scaricati</string>
@@ -59,8 +59,7 @@
     <string name="live_streams_not_supported">I contenuti in diretta non sono ancora supportati</string>
     <string name="content">Contenuti</string>
     <string name="show_age_restricted_content_title">Mostra contenuti con restrizioni di età</string>
-    <string name="main_bg_subtitle">Tocca \"Cerca\" per iniziare
-\n</string>
+    <string name="main_bg_subtitle">Tocca la lente d\'ingrandimento per iniziare.</string>
     <string name="autoplay_by_calling_app_title">Riproduzione automatica</string>
     <string name="autoplay_by_calling_app_summary">Riproduci i video quando NewPipe viene aperto da un\'altra app</string>
     <string name="duration_live">In diretta</string>
@@ -289,7 +288,7 @@
     <string name="delete_playlist">Elimina</string>
     <string name="rename_playlist">Rinomina</string>
     <string name="name">Nome</string>
-    <string name="append_playlist">Aggiungi a playlist</string>
+    <string name="append_playlist">Aggiungi alla playlist</string>
     <string name="set_as_playlist_thumbnail">Imposta come copertina della playlist</string>
     <string name="bookmark_playlist">Salva playlist</string>
     <string name="unbookmark_playlist">Rimuovi playlist</string>
@@ -477,7 +476,7 @@
     <string name="error_insufficient_storage">Spazio insufficiente sul dispositivo</string>
     <string name="error_progress_lost">Progresso perso poiché il file è stato eliminato</string>
     <string name="confirm_prompt">Vuoi cancellare la cronologia dei download o eliminare tutti i file scaricati\?</string>
-    <string name="enable_queue_limit_desc">Sarà avviato un solo dowload per volta</string>
+    <string name="enable_queue_limit_desc">Sarà avviato un solo download per volta</string>
     <string name="start_downloads">Avvia i download</string>
     <string name="pause_downloads">Sospendi i download</string>
     <string name="downloads_storage_ask_title">Chiedi dove scaricare</string>
@@ -521,7 +520,7 @@
     <string name="recovering">recupero</string>
     <string name="error_download_resource_gone">Impossibile recuperare questo download</string>
     <string name="choose_instance_prompt">Scegli un\'istanza</string>
-    <string name="clear_download_history">Elimina cronologia dei download</string>
+    <string name="clear_download_history">Elimina la cronologia dei download</string>
     <string name="delete_downloaded_files">Elimina file scaricati</string>
     <string name="deleted_downloads">%1$d download eliminati</string>
     <string name="permission_display_over_apps">Consentire la visualizzazione sopra altre applicazioni</string>
@@ -609,7 +608,7 @@
     <string name="feed_group_show_only_ungrouped_subscriptions">Mostra solo iscrizioni non raggruppate</string>
     <string name="select_a_playlist">Seleziona una playlist</string>
     <string name="search_showing_result_for">Risultati per: %s</string>
-    <string name="playlist_page_summary">Playlist</string>
+    <string name="playlist_page_summary">Pagina delle playlist</string>
     <string name="error_report_open_github_notice">Prima di segnalare un problema, verificare che non sia già stato riportato da qualcun altro. Il tempo che gli sviluppatori utilizzerebbero per creare un ulteriore ticket potrebbe essere invece impiegato per correggere il problema stesso.</string>
     <string name="error_report_open_issue_button_text">Segnala su GitHub</string>
     <string name="copy_for_github">Copia segnalazione formattata</string>
@@ -623,11 +622,11 @@
     <string name="clear_queue_confirmation_title">Chiedi prima di svuotare la coda</string>
     <string name="clear_queue_confirmation_summary">Cambiare tipo di riproduzione potrebbe sostituire gli elementi in coda</string>
     <string name="notification_actions_summary">Le azioni dei pulsanti della notifica possono essere modificate qua sotto. Selezionane fino a 3, utilizzando le caselle di controllo sulla destra. Verranno visualizzate nella notifica compatta.</string>
-    <string name="notification_action_4_title">Azione Pulsante 5</string>
-    <string name="notification_action_3_title">Azione Pulsante 4</string>
-    <string name="notification_action_2_title">Azione Pulsante 3</string>
-    <string name="notification_action_1_title">Azione Pulsante 2</string>
-    <string name="notification_action_0_title">Azione Pulsante 1</string>
+    <string name="notification_action_4_title">Azione pulsante 5</string>
+    <string name="notification_action_3_title">Azione pulsante 4</string>
+    <string name="notification_action_2_title">Azione pulsante 3</string>
+    <string name="notification_action_1_title">Azione pulsante 2</string>
+    <string name="notification_action_0_title">Azione pulsante 1</string>
     <string name="notification_action_buffering">Buffering</string>
     <string name="notification_actions_at_most_three">Nella notifica compatta è possibile visualizzare al massimo 3 azioni!</string>
     <string name="notification_action_shuffle">Casuale</string>
@@ -654,7 +653,7 @@
     <string name="recent">Recente</string>
     <string name="show_meta_info_summary">Disattiva per nascondere i riquadri con informazioni aggiuntive sul contenuto, sul suo creatore o su una richiesta di ricerca.</string>
     <string name="show_meta_info_title">Mostra meta-informazioni</string>
-    <string name="related_streams_tab_description">Contenuti correlati</string>
+    <string name="related_items_tab_description">Contenuti correlati</string>
     <string name="chapters">Capitoli</string>
     <string name="description_tab_description">Descrizione</string>
     <string name="comments_tab_description">Commenti</string>
@@ -662,4 +661,39 @@
     <string name="show_description_title">Mostra descrizione</string>
     <string name="open_with">Apri con</string>
     <string name="no_app_to_open_intent">Sul tuo dispositivo non c\'è alcuna app che può aprirlo</string>
+    <string name="crash_the_app">Fai crashare l\'app</string>
+    <string name="paid_content">Questo contenuto è disponibile solo per gli utenti paganti, quindi non può essere riprodotto o scaricato da NewPipe.</string>
+    <string name="soundcloud_go_plus_content">Nel tuo Paese questa è una traccia SoundCloud Go+, quindi non può essere riprodotta o scaricata da NewPipe.</string>
+    <string name="youtube_music_premium_content">Questo video è disponibile solo per i membri di YouTube Music Premium, quindi non può essere riprodotto o scaricato da NewPipe.</string>
+    <string name="private_content">Questo contenuto è privato, quindi non può essere riprodotto o scaricato da NewPipe.</string>
+    <string name="georestricted_content">Questo contenuto non è disponibile nel tuo Paese.</string>
+    <string name="restricted_video_no_stream">Questo video è soggetto a restrizioni di età.
+\nA causa delle nuove politiche di YouTube, NewPipe non può accedere a questo tipo di video.</string>
+    <string name="radio">Radio</string>
+    <string name="featured">In evidenza</string>
+    <string name="recaptcha_solve">Risolvi</string>
+    <string name="download_has_started">Download avviato</string>
+    <string name="select_night_theme_toast">Qua sotto è possibile selezionare il tema notturno preferito</string>
+    <string name="night_theme_summary">Seleziona il tema notturno preferito — %s</string>
+    <string name="auto_device_theme_title">Automatico (tema del dispositivo)</string>
+    <string name="night_theme_title">Tema notturno</string>
+    <string name="show_channel_details">Mostra dettagli canale</string>
+    <string name="disable_media_tunneling_summary">Disattiva il tunneling multimediale se durante la riproduzione dei video si verificano schermate nere o irregolarità nell\'audio</string>
+    <string name="disable_media_tunneling_title">Disattiva tunneling multimediale</string>
+    <string name="metadata_privacy_internal">Interno</string>
+    <string name="metadata_privacy_private">Privato</string>
+    <string name="metadata_privacy_unlisted">Non elencato</string>
+    <string name="metadata_privacy_public">Pubblico</string>
+    <string name="metadata_thumbnail_url">URL miniatura</string>
+    <string name="metadata_host">Host</string>
+    <string name="metadata_support">Supporto</string>
+    <string name="metadata_language">Lingua</string>
+    <string name="metadata_age_limit">Limite di età</string>
+    <string name="metadata_privacy">Privacy</string>
+    <string name="metadata_licence">Licenza</string>
+    <string name="metadata_tags">Etichette</string>
+    <string name="metadata_category">Categoria</string>
+    <string name="description_select_disable">Disattiva la selezione del testo nella descrizione</string>
+    <string name="description_select_enable">Attiva la selezione del testo nella descrizione</string>
+    <string name="description_select_note">Ora puoi selezionare il testo all\'interno della descrizione. Nota che la pagina potrebbe sfarfallare e i collegamenti potrebbero non essere cliccabili mentre sei in modalità di selezione.</string>
 </resources>

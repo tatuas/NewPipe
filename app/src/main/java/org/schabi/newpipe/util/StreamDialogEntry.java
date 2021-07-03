@@ -24,6 +24,13 @@ public enum StreamDialogEntry {
     // enum values with DEFAULT actions //
     //////////////////////////////////////
 
+    show_channel_details(R.string.show_channel_details, (fragment, item) ->
+        // For some reason `getParentFragmentManager()` doesn't work, but this does.
+        NavigationHelper.openChannelFragment(
+                fragment.requireActivity().getSupportFragmentManager(),
+                item.getServiceId(), item.getUploaderUrl(), item.getUploaderName())
+    ),
+
     /**
      * Enqueues the stream automatically to the current PlayerType.<br>
      * <br>
@@ -74,14 +81,17 @@ public enum StreamDialogEntry {
     play_with_kodi(R.string.play_with_kodi_title, (fragment, item) -> {
         final Uri videoUrl = Uri.parse(item.getUrl());
         try {
-            NavigationHelper.playWithKore(fragment.getContext(), videoUrl);
+            NavigationHelper.playWithKore(fragment.requireContext(), videoUrl);
         } catch (final Exception e) {
             KoreUtil.showInstallKoreDialog(fragment.getActivity());
         }
     }),
 
     share(R.string.share, (fragment, item) ->
-            ShareUtils.shareText(fragment.getContext(), item.getName(), item.getUrl()));
+            ShareUtils.shareText(fragment.getContext(), item.getName(), item.getUrl())),
+
+    open_in_browser(R.string.open_in_browser, (fragment, item) ->
+            ShareUtils.openUrlInBrowser(fragment.getContext(), item.getUrl()));
 
 
     ///////////////

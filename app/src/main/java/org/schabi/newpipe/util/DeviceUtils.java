@@ -6,8 +6,10 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.BatteryManager;
 import android.os.Build;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 
+import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 
@@ -17,6 +19,16 @@ public final class DeviceUtils {
 
     private static final String AMAZON_FEATURE_FIRE_TV = "amazon.hardware.fire_tv";
     private static Boolean isTV = null;
+
+    /*
+     * Devices that do not support media tunneling
+     */
+    // Formuler Z8 Pro, Z8, CC, Z Alpha, Z+ Neo
+    private static final boolean HI3798MV200 = Build.VERSION.SDK_INT == 24
+            && Build.DEVICE.equals("Hi3798MV200");
+    // Zephir TS43UHD-2
+    private static final boolean CVT_MT5886_EU_1G = Build.VERSION.SDK_INT == 24
+            && Build.DEVICE.equals("cvt_mt5886_eu_1g");
 
     private DeviceUtils() {
     }
@@ -69,5 +81,32 @@ public final class DeviceUtils {
             default:
                 return false;
         }
+    }
+
+    public static int dpToPx(@Dimension(unit = Dimension.DP) final int dp,
+                             @NonNull final Context context) {
+        return (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp,
+                context.getResources().getDisplayMetrics());
+    }
+
+    public static int spToPx(@Dimension(unit = Dimension.SP) final int sp,
+                             @NonNull final Context context) {
+        return (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_SP,
+                sp,
+                context.getResources().getDisplayMetrics());
+    }
+
+    /**
+     * Some devices have broken tunneled video playback but claim to support it.
+     * See https://github.com/TeamNewPipe/NewPipe/issues/5911
+     * @return false if Kitkat (does not support tunneling) or affected device
+     */
+    public static boolean shouldSupportMediaTunneling() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP
+                && !HI3798MV200
+                && !CVT_MT5886_EU_1G;
     }
 }
