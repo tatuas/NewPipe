@@ -610,8 +610,7 @@
     <string name="no_player_found">Perunu riproduidore de flussos agatadu. Cheres installare VLC\?</string>
     <string name="upload_date_text">Publicadu su %1$s</string>
     <string name="view_count_text">%1$s visualizatziones</string>
-    <string name="main_bg_subtitle">Toca \"Chirca\" pro incumintzare
-\n</string>
+    <string name="main_bg_subtitle">Toca sa lente de ismanniamentu pro incumintzare.</string>
     <string name="never">Mai</string>
     <string name="wifi_only">Cun su Wi-Fi ebbia</string>
     <string name="autoplay_summary">Incumintza cun sa riprodutzione automaticamente — %s</string>
@@ -657,9 +656,44 @@
     <string name="no_app_to_open_intent">Peruna aplicatzione in su dispositivu tuo podet abèrrere custu</string>
     <string name="chapters">Capìtulos</string>
     <string name="description_tab_description">Descritzione</string>
-    <string name="related_streams_tab_description">Flussos ligados</string>
+    <string name="related_items_tab_description">Flussos ligados</string>
     <string name="comments_tab_description">Cummentos</string>
     <string name="show_description_summary">Istuda pro cuare sa descritzione de su vìdeu e sas informatziones additzionales</string>
     <string name="show_description_title">Ammustra sa descritzione</string>
     <string name="open_with">Aberi cun</string>
+    <string name="paid_content">Custu vìdeu est a disponimentu petzi pro sos impreadores chi ant pagadu, e duncas non podet èssere riproduidu o iscarrigadu dae NewPipe.</string>
+    <string name="youtube_music_premium_content">Custu vìdeu est a disponimentu petzi pro sos membros de YouTube Music Premium, e duncas non podet èssere riproduidu o iscarrigadu dae NewPipe.</string>
+    <string name="private_content">Custu cuntenutu est privadu, e duncas non podet èssere riproduidu o iscarrigadu dae NewPipe.</string>
+    <string name="soundcloud_go_plus_content">Custa est una rasta SoundCloud Go+, a su mancu in su paisu tuo, e duncas non podet èssere riproduida o iscarrigada dae NewPipe.</string>
+    <string name="georestricted_content">Custu cuntenutu no est a disponimentu in su paisu tuo.</string>
+    <string name="crash_the_app">Faghe serrare s\'aplicatzione</string>
+    <string name="restricted_video_no_stream">Custu vìdeu tenet unu lìmite de edade.
+\nPro neghe de sas polìticas noas de YouTube in subra de sos vìdeos limitados pro edade, NewPipe non podet atzèdere a perunu flussu vìdeu de custa genia e duncas non los podet riproduire.</string>
+    <string name="radio">Ràdiu</string>
+    <string name="featured">In evidèntzia</string>
+    <string name="recaptcha_solve">Risolve</string>
+    <string name="download_has_started">S\'iscarrigamentu est incumintzadu</string>
+    <string name="select_night_theme_toast">Podes ischertare su tema pro sa note preferidu tuo inoghe in suta</string>
+    <string name="night_theme_summary">Ischerta su tema pro sa note preferidu tuo — %s</string>
+    <string name="auto_device_theme_title">Automàticu (tema de su dispositivu)</string>
+    <string name="night_theme_title">Tema pro sa note</string>
+    <string name="show_channel_details">Ammustra sos detàllios de su canale</string>
+    <string name="disable_media_tunneling_summary">Disabìlita sa tunnellizatzione de sos elementos multimediales si durante sa riprodutzione bi sunt ischermadas nieddas o su flussu de su vìdeu no est regulare</string>
+    <string name="disable_media_tunneling_title">Disabìlita sa tunnellizatzione de sos mèdios</string>
+    <string name="metadata_privacy_internal">Internu</string>
+    <string name="metadata_privacy_unlisted">No elencadu</string>
+    <string name="metadata_privacy_private">Privadu</string>
+    <string name="metadata_privacy_public">Pùblicu</string>
+    <string name="metadata_thumbnail_url">URL de sa miniadura</string>
+    <string name="metadata_host">Istrangiadore</string>
+    <string name="metadata_support">Suportu</string>
+    <string name="metadata_language">Limba</string>
+    <string name="metadata_age_limit">Lìmite de edade</string>
+    <string name="metadata_privacy">Riservadesa</string>
+    <string name="metadata_licence">Litzèntzia</string>
+    <string name="metadata_tags">Etichetas</string>
+    <string name="metadata_category">Categoria</string>
+    <string name="description_select_disable">Disabìlita s\'ischerta de su testu in sa descritzione</string>
+    <string name="description_select_enable">Abìlita s\'ischerta de su testu in sa descritzione</string>
+    <string name="description_select_note">Como podes ischertare su testu in intro de sa descritzione. Ammenta·ti chi sa pàgina diat pòdere trèmere e sos ligàmenes si diant pòdere no abèrrere cando ses in modalidade de ischerta.</string>
 </resources>

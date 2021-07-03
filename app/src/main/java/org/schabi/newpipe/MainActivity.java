@@ -60,6 +60,7 @@ import org.schabi.newpipe.databinding.DrawerHeaderBinding;
 import org.schabi.newpipe.databinding.DrawerLayoutBinding;
 import org.schabi.newpipe.databinding.InstanceSpinnerLayoutBinding;
 import org.schabi.newpipe.databinding.ToolbarLayoutBinding;
+import org.schabi.newpipe.error.ErrorActivity;
 import org.schabi.newpipe.extractor.NewPipe;
 import org.schabi.newpipe.extractor.StreamingService;
 import org.schabi.newpipe.extractor.exceptions.ExtractionException;
@@ -72,7 +73,6 @@ import org.schabi.newpipe.player.Player;
 import org.schabi.newpipe.player.event.OnKeyDownListener;
 import org.schabi.newpipe.player.helper.PlayerHolder;
 import org.schabi.newpipe.player.playqueue.PlayQueue;
-import org.schabi.newpipe.report.ErrorActivity;
 import org.schabi.newpipe.util.Constants;
 import org.schabi.newpipe.util.DeviceUtils;
 import org.schabi.newpipe.util.KioskTranslator;
@@ -95,6 +95,7 @@ import static org.schabi.newpipe.util.Localization.assureCorrectAppLanguage;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
+    @SuppressWarnings("ConstantConditions")
     public static final boolean DEBUG = !BuildConfig.BUILD_TYPE.equals("release");
 
     private ActivityMainBinding mainBinding;
@@ -133,6 +134,8 @@ public class MainActivity extends AppCompatActivity {
         if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
             TLSSocketFactoryCompat.setAsDefault();
         }
+
+        ThemeHelper.setDayNightMode(this);
         ThemeHelper.setTheme(this, ServiceHelper.getSelectedServiceId(this));
 
         assureCorrectAppLanguage(this);
@@ -153,7 +156,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             setupDrawer();
         } catch (final Exception e) {
-            ErrorActivity.reportUiError(this, e);
+            ErrorActivity.reportUiErrorInSnackbar(this, "Setting up drawer", e);
         }
 
         if (DeviceUtils.isTv(this)) {
@@ -180,27 +183,27 @@ public class MainActivity extends AppCompatActivity {
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_tabs_group, ITEM_ID_SUBSCRIPTIONS, ORDER,
                         R.string.tab_subscriptions)
-                .setIcon(ThemeHelper.resolveResourceIdFromAttr(this, R.attr.ic_channel));
+                .setIcon(R.drawable.ic_tv);
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_tabs_group, ITEM_ID_FEED, ORDER, R.string.fragment_feed_title)
-                .setIcon(ThemeHelper.resolveResourceIdFromAttr(this, R.attr.ic_rss));
+                .setIcon(R.drawable.ic_rss_feed);
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_tabs_group, ITEM_ID_BOOKMARKS, ORDER, R.string.tab_bookmarks)
-                .setIcon(ThemeHelper.resolveResourceIdFromAttr(this, R.attr.ic_bookmark));
+                .setIcon(R.drawable.ic_bookmark);
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_tabs_group, ITEM_ID_DOWNLOADS, ORDER, R.string.downloads)
-                .setIcon(ThemeHelper.resolveResourceIdFromAttr(this, R.attr.ic_file_download));
+                .setIcon(R.drawable.ic_file_download);
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_tabs_group, ITEM_ID_HISTORY, ORDER, R.string.action_history)
-                .setIcon(ThemeHelper.resolveResourceIdFromAttr(this, R.attr.ic_history));
+                .setIcon(R.drawable.ic_history);
 
         //Settings and About
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_options_about_group, ITEM_ID_SETTINGS, ORDER, R.string.settings)
-                .setIcon(ThemeHelper.resolveResourceIdFromAttr(this, R.attr.ic_settings));
+                .setIcon(R.drawable.ic_settings);
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_options_about_group, ITEM_ID_ABOUT, ORDER, R.string.tab_about)
-                .setIcon(ThemeHelper.resolveResourceIdFromAttr(this, R.attr.ic_info_outline));
+                .setIcon(R.drawable.ic_info_outline);
 
         toggle = new ActionBarDrawerToggle(this, mainBinding.getRoot(),
                 toolbarLayoutBinding.toolbar, R.string.drawer_open, R.string.drawer_close);
@@ -238,7 +241,7 @@ public class MainActivity extends AppCompatActivity {
                 try {
                     tabSelected(item);
                 } catch (final Exception e) {
-                    ErrorActivity.reportUiError(this, e);
+                    ErrorActivity.reportUiErrorInSnackbar(this, "Selecting main page tab", e);
                 }
                 break;
             case R.id.menu_options_about_group:
@@ -340,13 +343,13 @@ public class MainActivity extends AppCompatActivity {
             try {
                 showTabs();
             } catch (final Exception e) {
-                ErrorActivity.reportUiError(this, e);
+                ErrorActivity.reportUiErrorInSnackbar(this, "Showing main page tabs", e);
             }
         }
     }
 
     private void showServices() {
-        drawerHeaderBinding.drawerArrow.setImageResource(R.drawable.ic_arrow_drop_up_white_24dp);
+        drawerHeaderBinding.drawerArrow.setImageResource(R.drawable.ic_arrow_drop_up);
 
         for (final StreamingService s : NewPipe.getServices()) {
             final String title = s.getServiceInfo().getName()
@@ -412,7 +415,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showTabs() throws ExtractionException {
-        drawerHeaderBinding.drawerArrow.setImageResource(R.drawable.ic_arrow_drop_down_white_24dp);
+        drawerHeaderBinding.drawerArrow.setImageResource(R.drawable.ic_arrow_drop_down);
 
         //Tabs
         final int currentServiceId = ServiceHelper.getSelectedServiceId(this);
@@ -430,27 +433,27 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_tabs_group, ITEM_ID_SUBSCRIPTIONS, ORDER, R.string.tab_subscriptions)
-                .setIcon(ThemeHelper.resolveResourceIdFromAttr(this, R.attr.ic_channel));
+                .setIcon(R.drawable.ic_tv);
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_tabs_group, ITEM_ID_FEED, ORDER, R.string.fragment_feed_title)
-                .setIcon(ThemeHelper.resolveResourceIdFromAttr(this, R.attr.ic_rss));
+                .setIcon(R.drawable.ic_rss_feed);
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_tabs_group, ITEM_ID_BOOKMARKS, ORDER, R.string.tab_bookmarks)
-                .setIcon(ThemeHelper.resolveResourceIdFromAttr(this, R.attr.ic_bookmark));
+                .setIcon(R.drawable.ic_bookmark);
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_tabs_group, ITEM_ID_DOWNLOADS, ORDER, R.string.downloads)
-                .setIcon(ThemeHelper.resolveResourceIdFromAttr(this, R.attr.ic_file_download));
+                .setIcon(R.drawable.ic_file_download);
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_tabs_group, ITEM_ID_HISTORY, ORDER, R.string.action_history)
-                .setIcon(ThemeHelper.resolveResourceIdFromAttr(this, R.attr.ic_history));
+                .setIcon(R.drawable.ic_history);
 
         //Settings and About
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_options_about_group, ITEM_ID_SETTINGS, ORDER, R.string.settings)
-                .setIcon(ThemeHelper.resolveResourceIdFromAttr(this, R.attr.ic_settings));
+                .setIcon(R.drawable.ic_settings);
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_options_about_group, ITEM_ID_ABOUT, ORDER, R.string.tab_about)
-                .setIcon(ThemeHelper.resolveResourceIdFromAttr(this, R.attr.ic_info_outline));
+                .setIcon(R.drawable.ic_info_outline);
     }
 
     @Override
@@ -487,7 +490,7 @@ public class MainActivity extends AppCompatActivity {
             drawerHeaderBinding.drawerHeaderActionButton.setContentDescription(
                     getString(R.string.drawer_header_description) + selectedServiceName);
         } catch (final Exception e) {
-            ErrorActivity.reportUiError(this, e);
+            ErrorActivity.reportUiErrorInSnackbar(this, "Setting up service toggle", e);
         }
 
         final SharedPreferences sharedPreferences
@@ -679,19 +682,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(final MenuItem item) {
+    public boolean onOptionsItemSelected(@NonNull final MenuItem item) {
         if (DEBUG) {
             Log.d(TAG, "onOptionsItemSelected() called with: item = [" + item + "]");
         }
-        final int id = item.getItemId();
 
-        switch (id) {
-            case android.R.id.home:
-                onHomeButtonPressed();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == android.R.id.home) {
+            onHomeButtonPressed();
+            return true;
         }
+        return super.onOptionsItemSelected(item);
     }
 
     /*//////////////////////////////////////////////////////////////////////////
@@ -799,7 +799,7 @@ public class MainActivity extends AppCompatActivity {
                 NavigationHelper.gotoMainFragment(getSupportFragmentManager());
             }
         } catch (final Exception e) {
-            ErrorActivity.reportUiError(this, e);
+            ErrorActivity.reportUiErrorInSnackbar(this, "Handling intent", e);
         }
     }
 

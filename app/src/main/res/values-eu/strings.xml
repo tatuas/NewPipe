@@ -39,8 +39,7 @@
     <string name="use_external_video_player_title">Erabili kanpo bideo-erreproduzigailua</string>
     <string name="use_external_audio_player_title">Erabili kanpo audio-erreproduzigailua</string>
     <string name="background_player_playing_toast">Atzeko planoan erreproduzitzen</string>
-    <string name="main_bg_subtitle">Sakatu \"Bilatu\" hasteko
-\n</string>
+    <string name="main_bg_subtitle">Sakatu «bilatu» atalean hasteko.</string>
     <string name="download_path_audio_title">Audioa deskargatzeko karpeta</string>
     <string name="download_path_audio_dialog_title">Aukeratu audio fitxategiak deskargatzeko karpeta</string>
     <string name="download_path_audio_summary">Deskargatutako audio fitxategiak hemen gordetzen dira</string>
@@ -531,7 +530,7 @@
     <string name="recaptcha_done_button">Egina</string>
     <string name="videos_string">Bideoak</string>
     <plurals name="seconds">
-        <item quantity="one">%d segundu</item>
+        <item quantity="one">segundu %d</item>
         <item quantity="other">%d segundu</item>
     </plurals>
     <string name="new_seek_duration_toast">ExoPlayer-en mugak direla eta bilaketaren iraupena %d segundotan ezarri da</string>
@@ -657,9 +656,28 @@
     <string name="no_app_to_open_intent">Ez dago zure gailuan hau ireki dezakeen aplikaziorik</string>
     <string name="chapters">Kapituluak</string>
     <string name="description_tab_description">Deskribapena</string>
-    <string name="related_streams_tab_description">Erlazionatutako jarioak</string>
+    <string name="related_items_tab_description">Erlazionatutako jarioak</string>
     <string name="comments_tab_description">Iruzkinak</string>
     <string name="show_description_summary">Desaktibatu bideoaren deskribapena eta informazio gehigarria ezkutatzeko</string>
     <string name="show_description_title">Erakutsi deskribapena</string>
-    <string name="open_with">Ireki honekin...</string>
+    <string name="open_with">Ireki honekin…</string>
+    <string name="radio">Irratia</string>
+    <string name="featured">Nabarmenduak</string>
+    <string name="paid_content">Eduki hau ordaindu duten erabiltzaileentzat soilik dago eskuragarri, eta NewPipe-k ezin du tramsmititu edo deskargatu.</string>
+    <string name="youtube_music_premium_content">Bideo hau YouTube Music Premium kideentzako soilik eskuragarri dago, eta NewPipe-k ezin du transmititu edo deskargatu.</string>
+    <string name="private_content">Eduki hau pribatua da, eta NewPipe-k ezin du transmititu edo deskargatu.</string>
+    <string name="soundcloud_go_plus_content">Hau SoundCloud Go+ pista bat da, zure herrialdean gutxienez, eta NewPipe-k ezin du transmititu edo deskargatu.</string>
+    <string name="georestricted_content">Eduki hau ez dago eskuragarri zure herrialdean.</string>
+    <string name="crash_the_app">Aplikazioa kraskatu</string>
+    <string name="recaptcha_solve">Ebatzi</string>
+    <string name="restricted_video_no_stream">Bideo hau adinez mugatua dago.
+\nAdinez mugatutako bideoekiko YouTube-ren politika berriengatik, NewPipe-k ezin ditu bideo hauek atzitu eta ezin ditu erreproduzitu.</string>
+    <string name="download_has_started">Deskarga hasi da</string>
+    <string name="select_night_theme_toast">Behean gaueko gai gogokoena hauta dezakezu</string>
+    <string name="night_theme_summary">Hautatu zure gaueko gai gogokoena — %s</string>
+    <string name="auto_device_theme_title">Automatikoa (gailuaren gaia)</string>
+    <string name="night_theme_title">Gau Gaia</string>
+    <string name="show_channel_details">kanalaren xehetasunak erakutsi</string>
+    <string name="disable_media_tunneling_summary">Desaktibatu hedabideen tunela bideo-erreprodukzioan pantaila beltz bat edo totelka ari bada</string>
+    <string name="disable_media_tunneling_title">Hedabideen tunela desaktibatu</string>
 </resources>

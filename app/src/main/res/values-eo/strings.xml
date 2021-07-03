@@ -23,6 +23,7 @@
     <string name="theme_title">Etoso</string>
     <string name="dark_theme_title">Malluma</string>
     <string name="light_theme_title">Luma</string>
+    <string name="black_theme_title">Nigra</string>
     <string name="download_dialog_title">Elŝuti</string>
     <string name="unsupported_url">Ligilo ne subtenita</string>
     <string name="content_language_title">Preferata enhavlingvo</string>
@@ -64,8 +65,7 @@
     <string name="report_error">Signali eraron</string>
     <string name="video">Filmeto</string>
     <string name="retry">Reprovi</string>
-    <string name="main_bg_subtitle">Premi \"Serĉi\" por komenci
-\n</string>
+    <string name="main_bg_subtitle">Premi \"Serĉi\" por komenci</string>
     <string name="no_player_found_toast">Neniu elsendlflua ludilo trovita (instalu VLC por ludi ĝin).</string>
     <string name="open_in_popup_mode">Malfermi en ŝprucfenestran modon</string>
     <string name="use_external_video_player_summary">Forigas aŭdon ĉe kelkaj rezolucioj</string>
@@ -90,7 +90,6 @@
     <string name="show_higher_resolutions_title">Montri pli altajn rezoluciojn</string>
     <string name="show_higher_resolutions_summary">Nur kelkaj aparatoj povas ludi 2K / 4K filmetojn</string>
     <string name="default_video_format_title">Defaŭlta fomato de filmeto</string>
-    <string name="black_theme_title">Nigra</string>
     <string name="popup_remember_size_pos_title">Memoru ŝprucfenestran grandecon kaj pozicion</string>
     <string name="popup_remember_size_pos_summary">Memoru lastan grandecon kaj pozicion de ŝprucfenestro</string>
     <string name="use_inexact_seek_title">Uzi rapide, ne precizan serĉon</string>
@@ -528,7 +527,7 @@
     <string name="permission_display_over_apps">Doni la permeson por afiŝiĝi supre aliaj apoj</string>
     <string name="app_language_title">Preferata aplingvo</string>
     <string name="systems_language">Sistemnormo</string>
-    <string name="subtitle_activity_recaptcha">Premu « Finita » kiam solvita</string>
+    <string name="subtitle_activity_recaptcha">Premu “Finita” kiam solvita</string>
     <string name="recaptcha_done_button">Finita</string>
     <plurals name="seconds">
         <item quantity="one">%d sekundo</item>
@@ -579,4 +578,9 @@
     <string name="artists">Artistoj</string>
     <string name="albums">Albumoj</string>
     <string name="songs">Kantoj</string>
+    <string name="notification_action_nothing">Nenio</string>
+    <string name="notification_action_shuffle">Miksi</string>
+    <string name="notification_action_repeat">Ripeti</string>
+    <string name="search_showing_result_for">Montrante rezultojn pri: %s</string>
+    <string name="open_with">Malfermi per</string>
 </resources>

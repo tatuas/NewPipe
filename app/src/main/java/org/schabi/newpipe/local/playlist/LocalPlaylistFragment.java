@@ -34,6 +34,8 @@ import org.schabi.newpipe.database.stream.model.StreamEntity;
 import org.schabi.newpipe.database.stream.model.StreamStateEntity;
 import org.schabi.newpipe.databinding.LocalPlaylistHeaderBinding;
 import org.schabi.newpipe.databinding.PlaylistControlBinding;
+import org.schabi.newpipe.error.ErrorInfo;
+import org.schabi.newpipe.error.UserAction;
 import org.schabi.newpipe.extractor.stream.StreamInfoItem;
 import org.schabi.newpipe.extractor.stream.StreamType;
 import org.schabi.newpipe.info_list.InfoItemDialog;
@@ -42,7 +44,6 @@ import org.schabi.newpipe.local.history.HistoryRecordManager;
 import org.schabi.newpipe.player.helper.PlayerHolder;
 import org.schabi.newpipe.player.playqueue.PlayQueue;
 import org.schabi.newpipe.player.playqueue.SinglePlayQueue;
-import org.schabi.newpipe.report.UserAction;
 import org.schabi.newpipe.util.KoreUtil;
 import org.schabi.newpipe.util.Localization;
 import org.schabi.newpipe.util.NavigationHelper;
@@ -65,13 +66,13 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import io.reactivex.rxjava3.subjects.PublishSubject;
 
+import static org.schabi.newpipe.extractor.utils.Utils.isNullOrEmpty;
 import static org.schabi.newpipe.ktx.ViewUtils.animate;
 
 public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistStreamEntry>, Void> {
     // Save the list 10 seconds after the last change occurred
     private static final long SAVE_DEBOUNCE_MILLIS = 10000;
     private static final int MINIMUM_INITIAL_DRAG_VELOCITY = 12;
-
     @State
     protected Long playlistId;
     @State
@@ -110,7 +111,7 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        playlistManager = new LocalPlaylistManager(NewPipeDatabase.getInstance(getContext()));
+        playlistManager = new LocalPlaylistManager(NewPipeDatabase.getInstance(requireContext()));
         debouncedSaveSignal = PublishSubject.create();
 
         disposables = new CompositeDisposable();
@@ -334,35 +335,37 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
 
             @Override
             public void onError(final Throwable exception) {
-                LocalPlaylistFragment.this.onError(exception);
+                showError(new ErrorInfo(exception, UserAction.REQUESTED_BOOKMARK,
+                        "Loading local playlist"));
             }
 
             @Override
-            public void onComplete() { }
+            public void onComplete() {
+            }
         };
     }
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_item_remove_watched:
-                if (!isRemovingWatched) {
-                    new AlertDialog.Builder(requireContext())
-                            .setMessage(R.string.remove_watched_popup_warning)
-                            .setTitle(R.string.remove_watched_popup_title)
-                            .setPositiveButton(R.string.yes,
-                                    (DialogInterface d, int id) -> removeWatchedStreams(false))
-                            .setNeutralButton(
-                                    R.string.remove_watched_popup_yes_and_partially_watched_videos,
-                                    (DialogInterface d, int id) -> removeWatchedStreams(true))
-                            .setNegativeButton(R.string.cancel,
-                                    (DialogInterface d, int id) -> d.cancel())
-                            .create()
-                            .show();
-                }
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.menu_item_remove_watched) {
+            if (!isRemovingWatched) {
+                new AlertDialog.Builder(requireContext())
+                        .setMessage(R.string.remove_watched_popup_warning)
+                        .setTitle(R.string.remove_watched_popup_title)
+                        .setPositiveButton(R.string.yes,
+                                (DialogInterface d, int id) -> removeWatchedStreams(false))
+                        .setNeutralButton(
+                                R.string.remove_watched_popup_yes_and_partially_watched_videos,
+                                (DialogInterface d, int id) -> removeWatchedStreams(true))
+                        .setNegativeButton(R.string.cancel,
+                                (DialogInterface d, int id) -> d.cancel())
+                        .create()
+                        .show();
+            }
+        } else if (item.getItemId() == R.id.menu_item_rename_playlist) {
+            createRenameDialog();
+        } else {
+            return super.onOptionsItemSelected(item);
         }
         return true;
     }
@@ -420,7 +423,7 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
                                     playlistItem.getStreamId());
 
                             final boolean hasState = streamStatesIter.next() != null;
-                            if (indexInHistory < 0 ||  hasState) {
+                            if (indexInHistory < 0 || hasState) {
                                 notWatchedItems.add(playlistItem);
                             } else if (!thumbnailVideoRemoved
                                     && playlistManager.getPlaylistThumbnail(playlistId)
@@ -455,7 +458,8 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
 
                     hideLoading();
                     isRemovingWatched = false;
-                }, this::onError));
+                }, throwable -> showError(new ErrorInfo(throwable, UserAction.REQUESTED_BOOKMARK,
+                        "Removing watched videos, partially watched=" + removePartiallyWatched))));
     }
 
     @Override
@@ -511,17 +515,6 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
         }
     }
 
-    @Override
-    protected boolean onError(final Throwable exception) {
-        if (super.onError(exception)) {
-            return true;
-        }
-
-        onUnrecoverableError(exception, UserAction.SOMETHING_ELSE,
-                "none", "Local Playlist", R.string.general_error);
-        return true;
-    }
-
     /*//////////////////////////////////////////////////////////////////////////
     // Playlist Metadata/Streams Manipulation
     //////////////////////////////////////////////////////////////////////////*/
@@ -562,7 +555,9 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
 
         final Disposable disposable = playlistManager.renamePlaylist(playlistId, title)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(longs -> { /*Do nothing on success*/ }, this::onError);
+                .subscribe(longs -> { /*Do nothing on success*/ }, throwable ->
+                        showError(new ErrorInfo(throwable, UserAction.REQUESTED_BOOKMARK,
+                                "Renaming playlist")));
         disposables.add(disposable);
     }
 
@@ -583,7 +578,9 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
         final Disposable disposable = playlistManager
                 .changePlaylistThumbnail(playlistId, thumbnailUrl)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(ignore -> successToast.show(), this::onError);
+                .subscribe(ignore -> successToast.show(), throwable ->
+                        showError(new ErrorInfo(throwable, UserAction.REQUESTED_BOOKMARK,
+                                "Changing playlist thumbnail")));
         disposables.add(disposable);
     }
 
@@ -632,7 +629,9 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
         return debouncedSaveSignal
                 .debounce(SAVE_DEBOUNCE_MILLIS, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(ignored -> saveImmediate(), this::onError);
+                .subscribe(ignored -> saveImmediate(), throwable ->
+                        showError(new ErrorInfo(throwable, UserAction.SOMETHING_ELSE,
+                                "Debounced saver")));
     }
 
     private void saveImmediate() {
@@ -669,7 +668,8 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
                                 isModified.set(false);
                             }
                         },
-                        this::onError
+                        throwable -> showError(new ErrorInfo(throwable,
+                                UserAction.REQUESTED_BOOKMARK, "Saving playlist"))
                 );
         disposables.add(disposable);
     }
@@ -683,7 +683,7 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
         return new ItemTouchHelper.SimpleCallback(directions,
                 ItemTouchHelper.ACTION_STATE_IDLE) {
             @Override
-            public int interpolateOutOfBoundsScroll(final RecyclerView recyclerView,
+            public int interpolateOutOfBoundsScroll(@NonNull final RecyclerView recyclerView,
                                                     final int viewSize,
                                                     final int viewSizeOutOfBounds,
                                                     final int totalSize,
@@ -696,9 +696,9 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
             }
 
             @Override
-            public boolean onMove(final RecyclerView recyclerView,
-                                  final RecyclerView.ViewHolder source,
-                                  final RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull final RecyclerView recyclerView,
+                                  @NonNull final RecyclerView.ViewHolder source,
+                                  @NonNull final RecyclerView.ViewHolder target) {
                 if (source.getItemViewType() != target.getItemViewType()
                         || itemListAdapter == null) {
                     return false;
@@ -724,7 +724,9 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
             }
 
             @Override
-            public void onSwiped(final RecyclerView.ViewHolder viewHolder, final int swipeDir) { }
+            public void onSwiped(@NonNull final RecyclerView.ViewHolder viewHolder,
+                                 final int swipeDir) {
+            }
         };
     }
 
@@ -757,7 +759,7 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
                     StreamDialogEntry.append_playlist,
                     StreamDialogEntry.share
             ));
-        } else  {
+        } else {
             entries.addAll(Arrays.asList(
                     StreamDialogEntry.start_here_on_background,
                     StreamDialogEntry.start_here_on_popup,
@@ -767,9 +769,15 @@ public class LocalPlaylistFragment extends BaseLocalListFragment<List<PlaylistSt
                     StreamDialogEntry.share
             ));
         }
+        entries.add(StreamDialogEntry.open_in_browser);
         if (KoreUtil.shouldShowPlayWithKodi(context, infoItem.getServiceId())) {
             entries.add(StreamDialogEntry.play_with_kodi);
         }
+
+        if (!isNullOrEmpty(infoItem.getUploaderUrl())) {
+            entries.add(StreamDialogEntry.show_channel_details);
+        }
+
         StreamDialogEntry.setEnabledEntries(entries);
 
         StreamDialogEntry.start_here_on_background.setCustomAction((fragment, infoItemDuplicate) ->

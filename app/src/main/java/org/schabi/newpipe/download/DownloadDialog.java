@@ -37,6 +37,9 @@ import org.schabi.newpipe.MainActivity;
 import org.schabi.newpipe.R;
 import org.schabi.newpipe.RouterActivity;
 import org.schabi.newpipe.databinding.DownloadDialogBinding;
+import org.schabi.newpipe.error.ErrorActivity;
+import org.schabi.newpipe.error.ErrorInfo;
+import org.schabi.newpipe.error.UserAction;
 import org.schabi.newpipe.extractor.MediaFormat;
 import org.schabi.newpipe.extractor.NewPipe;
 import org.schabi.newpipe.extractor.localization.Localization;
@@ -45,9 +48,6 @@ import org.schabi.newpipe.extractor.stream.Stream;
 import org.schabi.newpipe.extractor.stream.StreamInfo;
 import org.schabi.newpipe.extractor.stream.SubtitlesStream;
 import org.schabi.newpipe.extractor.stream.VideoStream;
-import org.schabi.newpipe.report.ErrorActivity;
-import org.schabi.newpipe.report.ErrorInfo;
-import org.schabi.newpipe.report.UserAction;
 import org.schabi.newpipe.settings.NewPipeSettings;
 import org.schabi.newpipe.util.FilePickerActivityHelper;
 import org.schabi.newpipe.util.FilenameUtils;
@@ -61,7 +61,6 @@ import org.schabi.newpipe.util.ThemeHelper;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -313,25 +312,36 @@ public class DownloadDialog extends DialogFragment
 
     private void fetchStreamsSize() {
         disposables.clear();
-
         disposables.add(StreamSizeWrapper.fetchSizeForWrapper(wrappedVideoStreams)
                 .subscribe(result -> {
-            if (dialogBinding.videoAudioGroup.getCheckedRadioButtonId() == R.id.video_button) {
-                setupVideoSpinner();
-            }
-        }));
+                    if (dialogBinding.videoAudioGroup.getCheckedRadioButtonId()
+                            == R.id.video_button) {
+                        setupVideoSpinner();
+                    }
+                }, throwable -> ErrorActivity.reportErrorInSnackbar(context,
+                        new ErrorInfo(throwable, UserAction.DOWNLOAD_OPEN_DIALOG,
+                                "Downloading video stream size",
+                                currentInfo.getServiceId()))));
         disposables.add(StreamSizeWrapper.fetchSizeForWrapper(wrappedAudioStreams)
                 .subscribe(result -> {
-            if (dialogBinding.videoAudioGroup.getCheckedRadioButtonId() == R.id.audio_button) {
-                setupAudioSpinner();
-            }
-        }));
+                    if (dialogBinding.videoAudioGroup.getCheckedRadioButtonId()
+                            == R.id.audio_button) {
+                        setupAudioSpinner();
+                    }
+                }, throwable -> ErrorActivity.reportErrorInSnackbar(context,
+                        new ErrorInfo(throwable, UserAction.DOWNLOAD_OPEN_DIALOG,
+                                "Downloading audio stream size",
+                                currentInfo.getServiceId()))));
         disposables.add(StreamSizeWrapper.fetchSizeForWrapper(wrappedSubtitleStreams)
                 .subscribe(result -> {
-            if (dialogBinding.videoAudioGroup.getCheckedRadioButtonId() == R.id.subtitle_button) {
-                setupSubtitleSpinner();
-            }
-        }));
+                    if (dialogBinding.videoAudioGroup.getCheckedRadioButtonId()
+                            == R.id.subtitle_button) {
+                        setupSubtitleSpinner();
+                    }
+                }, throwable -> ErrorActivity.reportErrorInSnackbar(context,
+                        new ErrorInfo(throwable, UserAction.DOWNLOAD_OPEN_DIALOG,
+                                "Downloading subtitle stream size",
+                                currentInfo.getServiceId()))));
     }
 
     @Override
@@ -395,8 +405,7 @@ public class DownloadDialog extends DialogFragment
         }
 
         toolbar.setTitle(R.string.download_dialog_title);
-        toolbar.setNavigationIcon(
-            ThemeHelper.resolveResourceIdFromAttr(requireContext(), R.attr.ic_arrow_back));
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
         toolbar.inflateMenu(R.menu.dialog_url);
         toolbar.setNavigationOnClickListener(v -> requireDialog().dismiss());
         toolbar.setNavigationContentDescription(R.string.cancel);
@@ -591,17 +600,6 @@ public class DownloadDialog extends DialogFragment
                 .show();
     }
 
-    private void showErrorActivity(final Exception e) {
-        ErrorActivity.reportError(
-                context,
-                Collections.singletonList(e),
-                null,
-                null,
-                ErrorInfo
-                        .make(UserAction.SOMETHING_ELSE, "-", "-", R.string.general_error)
-        );
-    }
-
     private void prepareSelectedDownload() {
         final StoredDirectoryHelper mainStorage;
         final MediaFormat format;
@@ -705,7 +703,8 @@ public class DownloadDialog extends DialogFragment
                         mainStorage.getTag());
             }
         } catch (final Exception e) {
-            showErrorActivity(e);
+            ErrorActivity.reportErrorInSnackbar(this,
+                    new ErrorInfo(e, UserAction.DOWNLOAD_FAILED, "Getting storage"));
             return;
         }
 
@@ -937,6 +936,9 @@ public class DownloadDialog extends DialogFragment
 
         DownloadManagerService.startMission(context, urls, storage, kind, threads,
                 currentInfo.getUrl(), psName, psArgs, nearLength, recoveryInfo);
+
+        Toast.makeText(context, getString(R.string.download_has_started),
+                Toast.LENGTH_SHORT).show();
 
         dismiss();
     }

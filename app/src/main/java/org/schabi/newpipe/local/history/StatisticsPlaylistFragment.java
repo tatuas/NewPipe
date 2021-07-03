@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.viewbinding.ViewBinding;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -27,6 +26,8 @@ import org.schabi.newpipe.database.stream.StreamStatisticsEntry;
 import org.schabi.newpipe.database.stream.model.StreamEntity;
 import org.schabi.newpipe.databinding.PlaylistControlBinding;
 import org.schabi.newpipe.databinding.StatisticPlaylistControlBinding;
+import org.schabi.newpipe.error.ErrorInfo;
+import org.schabi.newpipe.error.UserAction;
 import org.schabi.newpipe.extractor.stream.StreamInfoItem;
 import org.schabi.newpipe.extractor.stream.StreamType;
 import org.schabi.newpipe.info_list.InfoItemDialog;
@@ -34,26 +35,25 @@ import org.schabi.newpipe.local.BaseLocalListFragment;
 import org.schabi.newpipe.player.helper.PlayerHolder;
 import org.schabi.newpipe.player.playqueue.PlayQueue;
 import org.schabi.newpipe.player.playqueue.SinglePlayQueue;
-import org.schabi.newpipe.report.ErrorActivity;
-import org.schabi.newpipe.report.ErrorInfo;
-import org.schabi.newpipe.report.UserAction;
-import org.schabi.newpipe.settings.SettingsActivity;
+import org.schabi.newpipe.settings.HistorySettingsFragment;
 import org.schabi.newpipe.util.KoreUtil;
 import org.schabi.newpipe.util.NavigationHelper;
 import org.schabi.newpipe.util.OnClickGesture;
 import org.schabi.newpipe.util.StreamDialogEntry;
-import org.schabi.newpipe.util.ThemeHelper;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import icepick.State;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
+
+import static org.schabi.newpipe.extractor.utils.Utils.isNullOrEmpty;
 
 public class StatisticsPlaylistFragment
         extends BaseLocalListFragment<List<StreamStatisticsEntry>, Void> {
@@ -163,48 +163,11 @@ public class StatisticsPlaylistFragment
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_history_clear:
-                new AlertDialog.Builder(activity)
-                        .setTitle(R.string.delete_view_history_alert)
-                        .setNegativeButton(R.string.cancel, ((dialog, which) -> dialog.dismiss()))
-                        .setPositiveButton(R.string.delete, ((dialog, which) -> {
-                            final Disposable onDelete = recordManager.deleteWholeStreamHistory()
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(
-                                            howManyDeleted -> Toast.makeText(getContext(),
-                                                    R.string.watch_history_deleted,
-                                                    Toast.LENGTH_SHORT).show(),
-                                            throwable -> ErrorActivity.reportError(getContext(),
-                                                    throwable,
-                                                    SettingsActivity.class, null,
-                                                    ErrorInfo.make(
-                                                            UserAction.DELETE_FROM_HISTORY,
-                                                            "none",
-                                                            "Delete view history",
-                                                            R.string.general_error)));
-
-                            final Disposable onClearOrphans = recordManager.removeOrphanedRecords()
-                                    .observeOn(AndroidSchedulers.mainThread())
-                                    .subscribe(
-                                            howManyDeleted -> {
-                                            },
-                                            throwable -> ErrorActivity.reportError(getContext(),
-                                                    throwable,
-                                                    SettingsActivity.class, null,
-                                                    ErrorInfo.make(
-                                                            UserAction.DELETE_FROM_HISTORY,
-                                                            "none",
-                                                            "Delete search history",
-                                                            R.string.general_error)));
-                            disposables.add(onClearOrphans);
-                            disposables.add(onDelete);
-                        }))
-                        .create()
-                        .show();
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.action_history_clear) {
+            HistorySettingsFragment
+                    .openDeleteWatchHistoryDialog(requireContext(), recordManager, disposables);
+        } else {
+            return super.onOptionsItemSelected(item);
         }
         return true;
     }
@@ -228,7 +191,7 @@ public class StatisticsPlaylistFragment
     @Override
     public void onPause() {
         super.onPause();
-        itemsListState = itemsList.getLayoutManager().onSaveInstanceState();
+        itemsListState = Objects.requireNonNull(itemsList.getLayoutManager()).onSaveInstanceState();
     }
 
     @Override
@@ -287,7 +250,8 @@ public class StatisticsPlaylistFragment
 
             @Override
             public void onError(final Throwable exception) {
-                StatisticsPlaylistFragment.this.onError(exception);
+                showError(
+                        new ErrorInfo(exception, UserAction.SOMETHING_ELSE, "History Statistics"));
             }
 
             @Override
@@ -313,7 +277,7 @@ public class StatisticsPlaylistFragment
         }
 
         itemListAdapter.addItems(processResult(result));
-        if (itemsListState != null) {
+        if (itemsListState != null && itemsList.getLayoutManager() != null) {
             itemsList.getLayoutManager().onRestoreInstanceState(itemsListState);
             itemsListState = null;
         }
@@ -341,17 +305,6 @@ public class StatisticsPlaylistFragment
         }
     }
 
-    @Override
-    protected boolean onError(final Throwable exception) {
-        if (super.onError(exception)) {
-            return true;
-        }
-
-        onUnrecoverableError(exception, UserAction.SOMETHING_ELSE,
-                "none", "History Statistics", R.string.general_error);
-        return true;
-    }
-
     /*//////////////////////////////////////////////////////////////////////////
     // Utils
     //////////////////////////////////////////////////////////////////////////*/
@@ -360,14 +313,13 @@ public class StatisticsPlaylistFragment
         if (sortMode == StatisticSortMode.LAST_PLAYED) {
             sortMode = StatisticSortMode.MOST_PLAYED;
             setTitle(getString(R.string.title_most_played));
-            headerBinding.sortButtonIcon.setImageResource(
-                ThemeHelper.resolveResourceIdFromAttr(requireContext(), R.attr.ic_history));
+            headerBinding.sortButtonIcon.setImageResource(R.drawable.ic_history);
             headerBinding.sortButtonText.setText(R.string.title_last_played);
         } else {
             sortMode = StatisticSortMode.LAST_PLAYED;
             setTitle(getString(R.string.title_last_played));
             headerBinding.sortButtonIcon.setImageResource(
-                ThemeHelper.resolveResourceIdFromAttr(requireContext(), R.attr.ic_filter_list));
+                R.drawable.ic_filter_list);
             headerBinding.sortButtonText.setText(R.string.title_most_played);
         }
         startLoading(true);
@@ -406,9 +358,15 @@ public class StatisticsPlaylistFragment
                     StreamDialogEntry.share
             ));
         }
+        entries.add(StreamDialogEntry.open_in_browser);
         if (KoreUtil.shouldShowPlayWithKodi(context, infoItem.getServiceId())) {
             entries.add(StreamDialogEntry.play_with_kodi);
         }
+
+        if (!isNullOrEmpty(infoItem.getUploaderUrl())) {
+            entries.add(StreamDialogEntry.show_channel_details);
+        }
+
         StreamDialogEntry.setEnabledEntries(entries);
 
         StreamDialogEntry.start_here_on_background.setCustomAction((fragment, infoItemDuplicate) ->
@@ -439,9 +397,8 @@ public class StatisticsPlaylistFragment
                                             Toast.LENGTH_SHORT).show();
                                 }
                             },
-                            throwable -> showSnackBarError(throwable,
-                                    UserAction.DELETE_FROM_HISTORY, "none",
-                                    "Deleting item failed", R.string.general_error));
+                            throwable -> showSnackBarError(new ErrorInfo(throwable,
+                                    UserAction.DELETE_FROM_HISTORY, "Deleting item")));
 
             disposables.add(onDelete);
         }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="main_bg_subtitle">Başlamak için \"Ara\" bölümüne dokun
-\n</string>
+    <string name="main_bg_subtitle">Başlamak için büyüteç simgesine dokunun.</string>
     <string name="view_count_text">%1$s görüntüleme</string>
     <string name="upload_date_text">Yayınlanma: %1$s</string>
     <string name="no_player_found">Akış oynatıcısı bulunamadı. VLC yüklensin mi\?</string>
@@ -648,18 +647,37 @@
     <string name="show_thumbnail_title">Küçük resmi göster</string>
     <string name="notification_colorize_summary">Android\'in bildirim rengini küçük resimdeki ana renge göre özelleştirmesini sağlayın (bunun tüm aygıtlarda kullanılamadığını unutmayın)</string>
     <string name="notification_colorize_title">Bildirimi renklendir</string>
-    <string name="msg_calculating_hash">Dosya özeti hesaplanıyor</string>
+    <string name="msg_calculating_hash">Hash hesaplanıyor</string>
     <string name="hash_channel_description">Video dosya özetleme süreci için bildirimler</string>
     <string name="hash_channel_name">Video Dosya Özeti Bildirimi</string>
-    <string name="recent">Son</string>
-    <string name="show_meta_info_summary">Akış yaratıcısı, akış içeriği veya arama isteğiyle ilgili ek bilgiyi gösteren üst bilgi kutularını gizlemek için kapat.</string>
+    <string name="recent">En Son</string>
+    <string name="show_meta_info_summary">Akış oluşturucu, akış içeriği veya bir arama isteği hakkında ek bilgiler içeren meta bilgi kutularını gizlemek için kapatın.</string>
     <string name="show_meta_info_title">Üst bilgiyi göster</string>
     <string name="chapters">Bölümler</string>
     <string name="description_tab_description">Açıklama</string>
-    <string name="related_streams_tab_description">İlgili akışlar</string>
+    <string name="related_items_tab_description">İlgili akışlar</string>
     <string name="comments_tab_description">Yorumlar</string>
     <string name="show_description_summary">Video açıklamasını ve ek bilgileri gizlemek için kapatın</string>
     <string name="show_description_title">Açıklamayı göster</string>
     <string name="open_with">Birlikte aç</string>
     <string name="no_app_to_open_intent">Aygıtınızdaki hiçbir uygulama bunu açamıyor</string>
+    <string name="crash_the_app">Uygulamayı çöktür</string>
+    <string name="paid_content">Bu içerik yalnızca ücretini ödemiş kullanıcılara açıktır, bu nedenle NewPipe tarafından oynatılamaz ve indirilemez.</string>
+    <string name="youtube_music_premium_content">Bu video yalnızca YouTube Müzik Premium üyelerine açıktır, bu nedenle NewPipe tarafından oynatılamaz veya indirilemez.</string>
+    <string name="private_content">Bu içerik özeldir, bu nedenle NewPipe tarafından oynatılamaz ve indirilemez.</string>
+    <string name="soundcloud_go_plus_content">Bu SoundCloud Go+ parçasıdır, en azından sizin ülkenizde, bu nedenle NewPipe tarafından oynatılamaz ve indirilemez.</string>
+    <string name="georestricted_content">Bu içerik ülkenizde kullanılamaz.</string>
+    <string name="restricted_video_no_stream">Bu video yaş kısıtlıdır.
+\nYouTube\'un yeni yaş kısıtlı videolar ilkesi gereği, NewPipe böylesi videoların akışına erişemez ve bu nedenle oynatamaz.</string>
+    <string name="featured">Öne çıkan</string>
+    <string name="radio">Radyo</string>
+    <string name="recaptcha_solve">Çöz</string>
+    <string name="download_has_started">İndirme başladı</string>
+    <string name="select_night_theme_toast">Gözde gece temanızı aşağıdan seçebilirsiniz</string>
+    <string name="night_theme_summary">Gözde gece temanızı seçin — %s</string>
+    <string name="auto_device_theme_title">Kendiliğinden (aygıt teması)</string>
+    <string name="night_theme_title">Gece Teması</string>
+    <string name="show_channel_details">Kanal ayrıntılarını göster</string>
+    <string name="disable_media_tunneling_summary">Ortam yürütümünde siyah ekran veya tutukluk yaşıyorsanız ortam tünellemeyi devre dışı bırakın</string>
+    <string name="disable_media_tunneling_title">Ortam tünellemeyi devre dışı bırak</string>
 </resources>

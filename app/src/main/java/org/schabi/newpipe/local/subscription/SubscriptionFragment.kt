@@ -1,7 +1,6 @@
 package org.schabi.newpipe.local.subscription
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.DialogInterface
@@ -17,6 +16,7 @@ import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.preference.PreferenceManager
@@ -34,6 +34,8 @@ import org.schabi.newpipe.database.feed.model.FeedGroupEntity
 import org.schabi.newpipe.databinding.DialogTitleBinding
 import org.schabi.newpipe.databinding.FeedItemCarouselBinding
 import org.schabi.newpipe.databinding.FragmentSubscriptionBinding
+import org.schabi.newpipe.error.ErrorInfo
+import org.schabi.newpipe.error.UserAction
 import org.schabi.newpipe.extractor.channel.ChannelInfoItem
 import org.schabi.newpipe.fragments.BaseStateFragment
 import org.schabi.newpipe.ktx.animate
@@ -56,12 +58,10 @@ import org.schabi.newpipe.local.subscription.services.SubscriptionsImportService
 import org.schabi.newpipe.local.subscription.services.SubscriptionsImportService.KEY_MODE
 import org.schabi.newpipe.local.subscription.services.SubscriptionsImportService.KEY_VALUE
 import org.schabi.newpipe.local.subscription.services.SubscriptionsImportService.PREVIOUS_EXPORT_MODE
-import org.schabi.newpipe.report.UserAction
 import org.schabi.newpipe.util.FilePickerActivityHelper
 import org.schabi.newpipe.util.NavigationHelper
 import org.schabi.newpipe.util.OnClickGesture
 import org.schabi.newpipe.util.ShareUtils
-import org.schabi.newpipe.util.ThemeHelper
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -208,7 +208,8 @@ class SubscriptionFragment : BaseStateFragment<SubscriptionState>() {
         if (data != null && data.data != null && resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_EXPORT_CODE) {
                 val exportFile = Utils.getFileForUri(data.data!!)
-                if (!exportFile.parentFile.canWrite() || !exportFile.parentFile.canRead()) {
+                val parentFile = exportFile.parentFile!!
+                if (!parentFile.canWrite() || !parentFile.canRead()) {
                     Toast.makeText(activity, R.string.invalid_directory, Toast.LENGTH_SHORT).show()
                 } else {
                     activity.startService(
@@ -256,7 +257,7 @@ class SubscriptionFragment : BaseStateFragment<SubscriptionState>() {
             feedGroupsCarousel = FeedGroupCarouselItem(requireContext(), carouselAdapter)
             feedGroupsSortMenuItem = HeaderWithMenuItem(
                 getString(R.string.feed_groups_header_title),
-                ThemeHelper.resolveResourceIdFromAttr(requireContext(), R.attr.ic_sort),
+                R.drawable.ic_sort,
                 menuItemOnClickListener = ::openReorderDialog
             )
             add(Section(feedGroupsSortMenuItem, listOf(feedGroupsCarousel)))
@@ -288,17 +289,21 @@ class SubscriptionFragment : BaseStateFragment<SubscriptionState>() {
         binding.itemsList.adapter = groupAdapter
 
         viewModel = ViewModelProvider(this).get(SubscriptionViewModel::class.java)
-        viewModel.stateLiveData.observe(viewLifecycleOwner, { it?.let(this::handleResult) })
-        viewModel.feedGroupsLiveData.observe(viewLifecycleOwner, { it?.let(this::handleFeedGroups) })
+        viewModel.stateLiveData.observe(viewLifecycleOwner) { it?.let(this::handleResult) }
+        viewModel.feedGroupsLiveData.observe(viewLifecycleOwner) { it?.let(this::handleFeedGroups) }
     }
 
     private fun showLongTapDialog(selectedItem: ChannelInfoItem) {
-        val commands = arrayOf(getString(R.string.share), getString(R.string.unsubscribe))
+        val commands = arrayOf(
+            getString(R.string.share), getString(R.string.open_in_browser),
+            getString(R.string.unsubscribe)
+        )
 
         val actions = DialogInterface.OnClickListener { _, i ->
             when (i) {
                 0 -> ShareUtils.shareText(requireContext(), selectedItem.name, selectedItem.url)
-                1 -> deleteChannel(selectedItem)
+                1 -> ShareUtils.openUrlInBrowser(requireContext(), selectedItem.url)
+                2 -> deleteChannel(selectedItem)
             }
         }
 
@@ -381,7 +386,9 @@ class SubscriptionFragment : BaseStateFragment<SubscriptionState>() {
                 }
             }
             is SubscriptionState.ErrorState -> {
-                result.error?.let { onError(result.error) }
+                result.error?.let {
+                    showError(ErrorInfo(result.error, UserAction.SOMETHING_ELSE, "Subscriptions"))
+                }
             }
         }
     }
@@ -410,17 +417,6 @@ class SubscriptionFragment : BaseStateFragment<SubscriptionState>() {
     override fun hideLoading() {
         super.hideLoading()
         binding.itemsList.animate(true, 200)
-    }
-
-    // /////////////////////////////////////////////////////////////////////////
-    // Fragment Error Handling
-    // /////////////////////////////////////////////////////////////////////////
-
-    override fun onError(exception: Throwable): Boolean {
-        if (super.onError(exception)) return true
-
-        onUnrecoverableError(exception, UserAction.SOMETHING_ELSE, "none", "Subscriptions", R.string.general_error)
-        return true
     }
 
     // /////////////////////////////////////////////////////////////////////////
